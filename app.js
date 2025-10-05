@@ -1,4 +1,3 @@
-
 // Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyAR_cihK_6g9TBEx2uWuCecX4VmHJgGYUA",
@@ -17,12 +16,10 @@ const database = firebase.database();
 // DOM Elements
 const fuelPercentEl = document.getElementById('fuelPercent');
 const flowRateEl = document.getElementById('flowRate');
-const theftEl = document.getElementById('theft'); // New element for theft status
+const theftEl = document.getElementById('theft'); 
 const lastUpdateEl = document.getElementById('lastUpdate');
 const gaugeFillEl = document.getElementById('gaugeFill');
 const peakFlowEl = document.getElementById('peakFlow');
-const dailyUsageBarEl = document.getElementById('dailyUsageBar');
-const dailyUsageValueEl = document.getElementById('dailyUsageValue');
 
 // Data history for charts
 let flowRateHistory = [];
@@ -81,13 +78,13 @@ const historyChart = new Chart(historyCtx, {
 
 // Update gauge visualization
 function updateGauge(percent) {
-  const degrees = percent * 1.8; // Convert percent to degrees (0-180)
+  const degrees = parseFloat(percent) * 1.8; // Convert percent to degrees (0-180)
   gaugeFillEl.style.transform = `rotate(${degrees/180}turn)`;
   
   // Change color based on level
-  if (percent < 20) {
+  if (parseFloat(percent) < 20) {
     gaugeFillEl.style.background = 'linear-gradient(90deg, #f72585, #f8961e)';
-  } else if (percent < 50) {
+  } else if (parseFloat(percent) < 50) {
     gaugeFillEl.style.background = 'linear-gradient(90deg, #f8961e, #4cc9f0)';
   } else {
     gaugeFillEl.style.background = 'linear-gradient(90deg, #4361ee, #4cc9f0)';
@@ -96,25 +93,16 @@ function updateGauge(percent) {
 
 // Update flow rate sparkline
 function updateFlowRateSparkline(rate) {
-  flowRateHistory.push(rate);
+  flowRateHistory.push(parseFloat(rate));
   if (flowRateHistory.length > maxHistoryPoints) {
     flowRateHistory.shift();
   }
   
   // Update peak flow rate
-  if (rate > peakFlowRate) {
-    peakFlowRate = rate;
+  if (parseFloat(rate) > peakFlowRate) {
+    peakFlowRate = parseFloat(rate);
     peakFlowEl.textContent = `${peakFlowRate.toFixed(2)} L/min`;
   }
-}
-
-// Update daily usage progress
-function updateDailyUsage(consumption) {
-  const dailyLimit = 500;
-  const usagePercent = Math.min((consumption / dailyLimit) * 100, 100);
-  
-  dailyUsageBarEl.style.width = `${usagePercent}%`;
-  dailyUsageValueEl.textContent = `${usagePercent.toFixed(1)}%`;
 }
 
 // Format time for last update display
@@ -133,14 +121,12 @@ database.ref('Tank').on('value', (snapshot) => {
     flowRateEl.textContent = parseFloat(data.flowRate).toFixed(2);
     theftEl.textContent = data.theft ? "ATTENTION: Fuel Theft Detected!" : "No Theft Detected";
     theftEl.style.color = data.theft ? "var(--danger)" : "var(--success)"; // Apply color based on theft status
-    totalConsumptionEl.textContent = data.total_consumption.toFixed(2);
     lastUpdateEl.textContent = `Last update: ${formatTime(now)}`;
     lastUpdateEl.style.color = 'var(--dark)'; // Reset color on successful update
     
     // Update visualizations
-    updateGauge(data.fuel_percent);
-    updateFlowRateSparkline(data.flow_rate);
-    updateDailyUsage(data.total_consumption);
+    updateGauge(data.fuelPercent);
+    updateFlowRateSparkline(data.flowRate);
     
     // Update history chart
     fuelLevelHistory.push(parseFloat(data.fuelPercent));
