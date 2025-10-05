@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FuelSync Pro | Tank Monitoring</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="dashboard-container">
+    <header class="dashboard-header">
+      <div class="header-content">
+        <div class="logo">
+          <i class="fas fa-gas-pump"></i>
+          <h1>FuelSync <span>Pro</span></h1>
+        </div>
+        <div class="status-indicator">
+          <div class="connection-status connected">
+            <i class="fas fa-wifi"></i>
+            <span>Connected</span>
+          </div>
+          <div class="last-update" id="lastUpdate">Updating...</div>
+        </div>
+      </div>
+    </header>
+
+    <main class="dashboard-main">
+      <div class="data-grid">
+        <!-- Fuel Level Card -->
+        <div class="data-card fuel-level">
+          <div class="card-header">
+            <h2>Fuel Level</h2>
+            <i class="fas fa-oil-can"></i>
+          </div>
+          <div class="card-content">
+            <div class="gauge-container">
+              <div class="gauge" id="fuelGauge">
+                <div class="gauge-body">
+                  <div class="gauge-fill" id="gaugeFill"></div>
+                </div>
+                <div class="gauge-value" id="fuelPercent">--%</div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <div class="trend">
+                <i class="fas fa-arrow-up trend-up"></i>
+                <span>Stable</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Flow Rate Card -->
+        <div class="data-card flow-rate">
+          <div class="card-header">
+            <h2>Flow Rate</h2>
+            <i class="fas fa-tachometer-alt"></i>
+          </div>
+          <div class="card-content">
+            <div class="value-container">
+              <div class="value" id="flowRate">--</div>
+              <div class="unit">L/min</div>
+            </div>
+            <div class="sparkline" id="flowRateChart"></div>
+            <div class="card-footer">
+              <div class="stats">
+                <div class="stat">
+                  <span>Peak</span>
+                  <strong id="peakFlow">-- L/min</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Consumption Card -->
+        <div class="data-card consumption">
+          <div class="card-header">
+            <h2>Total Consumption</h2>
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <div class="card-content">
+            <div class="value-container large">
+              <div class="value" id="totalConsumption">--</div>
+              <div class="unit">Liters</div>
+            </div>
+            <div class="progress-container">
+              <div class="progress-label">Daily Usage</div>
+              <div class="progress-bar">
+                <div class="progress-fill" id="dailyUsageBar"></div>
+              </div>
+              <div class="progress-value" id="dailyUsageValue">0%</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- History Graph -->
+        <div class="data-card full-width history-graph">
+          <div class="card-header">
+            <h2>Fuel Level History</h2>
+            <div class="time-range">
+              <button class="active">1h</button>
+              <button>6h</button>
+              <button>24h</button>
+            </div>
+          </div>
+          <div class="card-content">
+            <div class="chart-container">
+              <canvas id="historyChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="dashboard-footer">
+      <p>FuelSync Pro Monitoring System © 2023</p>
+      <p>Last calibrated: Today 10:42 AM</p>
+    </footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>
