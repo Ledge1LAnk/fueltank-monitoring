@@ -140,10 +140,6 @@ body {
   color: var(--primary);
 }
 
-.card-content {
-  padding: 1.5rem;
-}
-
 .fuel-level .card-header i {
   color: var(--primary);
 }
@@ -154,6 +150,10 @@ body {
 
 .consumption .card-header i {
   color: var(--success);
+}
+
+.card-content {
+  padding: 1.5rem;
 }
 
 .gauge-container {
